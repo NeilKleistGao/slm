@@ -1,2 +1,2 @@
 # slm
-Scala Mathematics
+Finally-Tagless-Style Scala Mathematics
