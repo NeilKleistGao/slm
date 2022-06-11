@@ -12,7 +12,7 @@ trait Vector[VectorExpr, ScaleExpr, DimExpr] extends Module[VectorExpr, ScaleExp
   def zipMap(v1: VectorExpr, v2: VectorExpr, op: (ScaleExpr, ScaleExpr) => ScaleExpr): VectorExpr =
     ops.build(ops.length(v1))(i => op(ops.get(v1)(i), ops.get(v2)(i)))
 
-  def add(lhs: VectorExpr, rhs: VectorExpr) = zipMap(lhs, rhs, scale_semi_ring.add)
+  def add(lhs: VectorExpr, rhs: VectorExpr): VectorExpr = zipMap(lhs, rhs, scale_semi_ring.add)
   def smul(s: ScaleExpr, v: VectorExpr): VectorExpr = map(v, e => scale_semi_ring.mul(s, e))
   def dot(lhs: VectorExpr, rhs: VectorExpr): ScaleExpr =
     looping.forLoop(scale_semi_ring.zero)(ops.length(lhs))((acc, i) =>
