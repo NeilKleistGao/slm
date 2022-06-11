@@ -12,4 +12,15 @@ package object base {
   def dim[VectorExpr, DimExpr](vec: VectorExpr)(implicit env: Module[VectorExpr, _, DimExpr]): DimExpr = env.dim(vec)
   def add[VectorExpr](lhs: VectorExpr, rhs: VectorExpr)(implicit env: Module[VectorExpr, _, _]): VectorExpr = env.add(lhs, rhs)
   def smul[ScaleExpr, VectorExpr](s: ScaleExpr, v: VectorExpr)(implicit env: Module[VectorExpr, ScaleExpr, _]): VectorExpr = env.smul(s, v)
+
+  def apply[MatrixExpr, VectorExpr](mat: MatrixExpr, vec: VectorExpr)(implicit env: LinearMap[MatrixExpr, VectorExpr, _, _]): VectorExpr = env.apply(mat, vec)
+  def compose[MatrixExpr](lhs: MatrixExpr, rhs: MatrixExpr)(implicit env: LinearMap[MatrixExpr, _, _, _]): MatrixExpr = env.compose(lhs, rhs)
+  def add[MatrixExpr](lhs: MatrixExpr, rhs: MatrixExpr)(implicit env: LinearMap[MatrixExpr, _, _, _]): MatrixExpr = env.add(lhs, rhs)
+  def dims[MatrixExpr, DimExpr](mat: MatrixExpr)(implicit env: LinearMap[MatrixExpr, _, _, DimExpr]): (DimExpr, DimExpr) = env.dims(mat)
+
+  def build[ArrExpr, EleExpr, LenExpr](len: LenExpr)(f: LenExpr => EleExpr)(implicit env: PullArrayOps[ArrExpr, EleExpr, LenExpr]): ArrExpr = env.build(len)(f)
+  def get[ArrExpr, EleExpr, LenExpr](arr: ArrExpr)(i: LenExpr)(implicit env: PullArrayOps[ArrExpr, EleExpr, LenExpr]): EleExpr = env.get(arr)(i)
+  def length[ArrExpr, LenExpr](arr: ArrExpr)(implicit env: PullArrayOps[ArrExpr, _, LenExpr]): LenExpr = env.length(arr)
+
+  def forLoop[LenExpr, StateExpr](s: StateExpr)(len: LenExpr)(f: (StateExpr, LenExpr) => StateExpr)(implicit env: Looping[LenExpr]): StateExpr = env.forLoop[StateExpr](s)(len)(f)
 }
